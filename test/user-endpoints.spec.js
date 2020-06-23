@@ -29,7 +29,7 @@ describe('Users Endpoints', function() {
     context('given no characters', () => {
      it(`responds with 200, and empty array when no characters`, () => {
        return supertest(app)
-         .get('/api/users/2')
+         .get('/api/users/2/characters')
          .expect(200, [])
      })
     })
@@ -44,17 +44,10 @@ describe('Users Endpoints', function() {
      })
 
      it('responds with 200 and all characters for a user', () => {
-       //have specific user and get only their charas
-      //  const expectedCharacters = testCharacters.map(character => {
-      //    return helpers.makeExpectedCharacters(
-      //      testUsers[0],
-      //      character
-      //    )
-      //  })
        const expectedCharacters = testCharacters.filter(character => character.user_id === testUsers[0].id)
        console.log('length', expectedCharacters.length)
        return supertest(app)
-        .get('/api/users/1')
+        .get('/api/users/1/characters')
         .expect(200, expectedCharacters)
      })
 
