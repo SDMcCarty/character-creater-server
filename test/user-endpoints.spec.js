@@ -26,7 +26,7 @@ describe('Users Endpoints', function() {
   afterEach('cleanup', () => helpers.cleanTables(db))
 
   describe(`GET users/:user_id`, () => {
-    context.skip('given no characters', () => {
+    context('given no characters', () => {
      it(`responds with 200, and empty array when no characters`, () => {
        return supertest(app)
          .get('/api/users/2')

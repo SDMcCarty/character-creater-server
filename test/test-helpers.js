@@ -61,22 +61,6 @@ function makeCharactersArray(testUsers) {
   ]
 }
 
-function makeExpectedCharacters(user, character) {
-  // const user = users.find(usr => usr.id === character.user_id)
-
-  // return {
-  //   id: character.id,
-  //   first_name: character.first_name,
-  //   last_name: character.last_name,
-  //   major_trait: character.major_trait,
-  //   created: character.created,
-  //   modified: character.modified,
-  //   status: character.status,
-  //   user_id: user.id
-  // }
-}
-
-
 function makeCharactersFixtures() {
   const testUsers = makeUsersArray()
   const testCharacters = makeCharactersArray(testUsers)
@@ -120,7 +104,6 @@ function seedCharactersTables(db, users, characters=[]) {
 module.exports = {
   makeUsersArray,
   makeCharactersArray,
-  makeExpectedCharacters,
   makeCharactersFixtures,
 
   cleanTables,
