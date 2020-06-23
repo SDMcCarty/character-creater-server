@@ -16,19 +16,27 @@ const CharactersService = {
   }, //is this something app should do?
 
   getById(db, id) {
-    console.log(`getById ${id}`)
-    console.log(typeof id)
     return this.getAllCharacters(db)
       .from('characters')
       .where('user_id', id)
   },
 
   getCharactersForUser(db, user_id) {
-    console.log(user_id)
     return db
       .from('characters')
       .select('*')
       .where('characters.user_id', user_id)
+  },
+
+  insertCharacter(db, newCharacter) {
+    return db
+      .insert(newCharacter)
+      .into('characters')
+      .returning('*')
+      .then(([character]) => character)
+      .then(character => 
+        CharactersService.getCharacter(db, character.id)
+      )
   },
 
   serializeCharacter(character) {

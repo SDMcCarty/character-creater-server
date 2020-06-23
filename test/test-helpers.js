@@ -101,6 +101,8 @@ function seedCharactersTables(db, users, characters=[]) {
 }
 
 
+
+
 module.exports = {
   makeUsersArray,
   makeCharactersArray,

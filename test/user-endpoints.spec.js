@@ -45,7 +45,6 @@ describe('Users Endpoints', function() {
 
      it('responds with 200 and all characters for a user', () => {
        const expectedCharacters = testCharacters.filter(character => character.user_id === testUsers[0].id)
-       console.log('length', expectedCharacters.length)
        return supertest(app)
         .get('/api/users/1/characters')
         .expect(200, expectedCharacters)

@@ -1,24 +1,43 @@
 const express = require('express')
+const path = require('path')
 const CharactersService = require('./characters-service')
 
 const charactersRouter = express.Router()
+const jsonBodyParser = express.json()
 
 charactersRouter
   .route('/:user_id/characters')
   .get(checkUserExists)
   .get((req, res, next) => {
-    console.log(`User id ${req.params.user_id}`)
     CharactersService.getCharactersForUser(
       req.app.get('db'), 
       req.params.user_id //req.id? req.user.id mitai kedo tabun chigau yo ne
     )
       .then(characters => {
-        console.log(`characters`, characters )
         const serializedCharacters = characters.map(character => CharactersService.serializeCharacter(character))
-        console.log('Ser', serializedCharacters)
         res.json(serializedCharacters)
       })
       .catch(next)
+  })
+  .post(jsonBodyParser, (req, res, next) => {
+    const { user_id, first_name, last_name, status, major_trait } = req.body
+    const newCharacter = { user_id, first_name, last_name, status, major_trait }
+
+    newCharacter.id = req.id
+    newCharacter.created = req.created
+
+    CharactersService.insertCharacter(
+      req.app.get('db'),
+      newCharacter
+    )
+      .then(character => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${character.id}`))
+          .json(CharactersService.serializeCharacter(character))
+      })
+      .catch(next)
+
   })
 
   async function checkUserExists(req, res, next) {
@@ -46,7 +65,6 @@ charactersRouter
 charactersRouter
   .route('/:user_id/characters/:character_id')
   .get(checkCharacterExists, (req, res, next) => {
-    console.log('character id', `${req.params.character_id}`)
     CharactersService.getCharacter(
       req.app.get('db'),
       req.params.character_id
@@ -64,7 +82,6 @@ charactersRouter
         req.app.get('db'),
         req.params.character_id
       )
-      console.log(`character`, character)
 
       if(!character) 
         return res.status(404).json({
