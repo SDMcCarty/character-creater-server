@@ -45,7 +45,7 @@ function makeCharactersArray(testUsers) {
       major_trait: 'verbose',
       created: '2029-01-22T16:28:32.615Z',
       modified: '2029-01-24T16:28:32.615Z',
-      stauts: 'in-progress',
+      status: 'in-progress',
       user_id: 1
     },
     {
@@ -54,11 +54,26 @@ function makeCharactersArray(testUsers) {
       last_name: 'K',
       major_trait: 'indecisive',
       created: '2029-01-22T16:28:32.615Z',
-      modified: null,
+      modified: '1970-01-01T00:00:00.000Z',
       status: 'completed',
       user_id: 1
     }
   ]
+}
+
+function makeExpectedCharacters(user, character) {
+  // const user = users.find(usr => usr.id === character.user_id)
+
+  // return {
+  //   id: character.id,
+  //   first_name: character.first_name,
+  //   last_name: character.last_name,
+  //   major_trait: character.major_trait,
+  //   created: character.created,
+  //   modified: character.modified,
+  //   status: character.status,
+  //   user_id: user.id
+  // }
 }
 
 
@@ -105,6 +120,7 @@ function seedCharactersTables(db, users, characters=[]) {
 module.exports = {
   makeUsersArray,
   makeCharactersArray,
+  makeExpectedCharacters,
   makeCharactersFixtures,
 
   cleanTables,
