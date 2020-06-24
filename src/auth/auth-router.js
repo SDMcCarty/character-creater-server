@@ -8,8 +8,6 @@ const jsonBodyParser = express.json()
 authRouter
   .post('/login', jsonBodyParser, (req, res, next) => {
     const { user_name, password } = req.body
-    console.log('username is ', user_name)
-    console.log('password is ', password)
     const loginUser = { user_name, password }
 
     for (const [key, value] of Object.entries(loginUser))
@@ -23,7 +21,6 @@ authRouter
       loginUser.user_name
     )
       .then(dbUser => {
-        console.log('dbUser', dbUser)
         if(!dbUser)
           return res.status(400).json({
             error: 'Invalid credentials'

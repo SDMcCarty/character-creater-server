@@ -4,13 +4,11 @@ const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
 
-describe.only('Auth Endpoints', function() {
+describe('Auth Endpoints', function() {
   let db
 
   const { testUsers } = helpers.makeCharactersFixtures()
-  console.log('testUsers', testUsers)
   const testUser = testUsers[0]
-  console.log('testUser', testUser)
 
   before('knex instance', () => {
     db = knex({
