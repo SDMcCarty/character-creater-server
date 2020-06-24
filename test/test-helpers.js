@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 
-function makeUsersArray(){
+function makeUsersArray() {
   return [
     {
       id: 1,

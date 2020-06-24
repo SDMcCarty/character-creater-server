@@ -6,7 +6,7 @@ const supertest = require('supertest')
 describe.only('Auth Endpoints', function() {
   let db
 
-  const { testUsers } = helpers.makeUsersArray()
+  const { testUsers } = helpers.makeCharactersFixtures()
   const testUser = testUsers[0]
 
   before('knex instance', () => {
@@ -51,7 +51,25 @@ describe.only('Auth Endpoints', function() {
       })
     })
 
-    
+    it(`responds with 400 'invalid credentials' when bad user_name`, () => {
+      const userInvalidUser = { user_name: 'user-not', password: 'existy' }
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(userInvalidUser)
+        .expect(400, { error: `Invalid credentials` })
+    })
+
+    it(`responds with 400 'invalid credentials' when bad password`, () => {
+      const userInvaildPass = { user_name: testUser.user_name, password: 'incorrect' }
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(userInvaildPass)
+        .expect(400, { error: 'Invalid credentials' })
+    })
+
+
+
+
 
   })
 
