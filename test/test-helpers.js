@@ -84,7 +84,7 @@ function seedUsers(db, users) {
   return db.into('character_creater_users').insert(preppedUsers)
       .then(() => {
         //update the auto sequence to stay in sync
-        db.raw(`SELECT setval('shacracter_creater_id_sql', ?)`,
+        db.raw(`SELECT setval('chacracter_creater_users_id_seq', ?)`,
         [users[users.length - 1].id],
         )
       })
