@@ -4,7 +4,7 @@ const config = require('../config')
 
 const AuthService = {
   getUserWithUserName(db, user_name) {
-    return db('character-creater-api')
+    return db('character_creater_users')
       .where({ user_name })
       .first()
   },
