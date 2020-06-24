@@ -38,6 +38,7 @@ describe('Characters Endpoints', function() {
 
       it('should respond with 200 and the character', () => {
         const expectedCharacter = testCharacters[0]
+        //Change Route => add .auth()
         return supertest(app)
           .get('/api/users/3/characters/1')
           .expect(200, expectedCharacter)

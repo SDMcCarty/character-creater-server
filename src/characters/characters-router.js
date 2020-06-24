@@ -2,23 +2,29 @@ const express = require('express')
 const path = require('path')
 const CharactersService = require('./characters-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const { contentSecurityPolicy } = require('helmet')
 
 const charactersRouter = express.Router()
 const jsonBodyParser = express.json()
 
 charactersRouter
-  .route('/:user_id/characters')
-  .get(checkUserExists)
+  .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
+    console.log(req.user.id)
     CharactersService.getCharactersForUser(
       req.app.get('db'), 
-      req.params.user_id //req.id? req.user.id mitai kedo tabun chigau yo ne
+      req.user.id
     )
       .then(characters => {
+        console.log(characters)
         const serializedCharacters = characters.map(character => CharactersService.serializeCharacter(character))
         res.json(serializedCharacters)
       })
-      .catch(next)
+      .catch(err => {
+        console.log(err)
+        next()
+      })
   })
   .post(jsonBodyParser, (req, res, next) => {
     const { user_id, first_name, last_name, status, major_trait } = req.body

@@ -7,9 +7,9 @@ TRUNCATE
 
 INSERT INTO character_creater_users (user_name, password, deleted, email)
 VALUES
-  ('pookie', 'password', FALSE, 'pookiemaster@gmail.com'),
-  ('darkmath', 'password', FALSE, 'dark.math@darkness.org'),
-  ('nova', 'password', FALSE, 'nova@spacecases.com');
+  ('pookie', '$2a$12$LT6AQTPzGVymBDOFefGH8uCnZCSthuICIqZ5vuak6VFfowAQaVBZ6', FALSE, 'pookiemaster@gmail.com'),
+  ('darkmath', '$2a$12$LT6AQTPzGVymBDOFefGH8uCnZCSthuICIqZ5vuak6VFfowAQaVBZ6', FALSE, 'dark.math@darkness.org'),
+  ('nova', '$2a$12$LT6AQTPzGVymBDOFefGH8uCnZCSthuICIqZ5vuak6VFfowAQaVBZ6', FALSE, 'nova@spacecases.com');
 
 
 INSERT INTO characters (first_name, last_name, major_trait, modified, status, user_id)
