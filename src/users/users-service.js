@@ -32,6 +32,9 @@ const UsersService = {
     }
     return null
   },
+  hashPassword(password) {
+    return bcrypt.hash(password, 12)
+  },
   serializeUser(user) {
     return{
       id: user.id,
@@ -39,12 +42,8 @@ const UsersService = {
       deleted: false,
       email: xss(user.email)
     }
-  },
-
-  hashPassword(password) {
-    return bcrypt.hash(password, 12)
   }
-
+  
 }
 
 module.exports = UsersService

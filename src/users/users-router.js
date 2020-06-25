@@ -29,22 +29,26 @@ usersRouter
         if (hasUserWithUserName)
           return res.status(400).json({ error: `Username already taken` })
 
-        const newUser = {
-          user_name,
-          password,
-          deleted: false,
-          email,
-        }
+          return UsersService.hashPassword(password)
+          .then(hashedPassword => {
+            const newUser = {
+              user_name,
+              password,
+              deleted: false,
+              email,
+              password: hashedPassword
+            }
 
-        return UsersService.insertUser(
-          req.app.get('db'),
-          newUser
-        )
-          .then(user => {
-            res
-              .status(201)
-              .location(path.posix.join(req.originalUrl, `/${user.id}`))
-              .json(UsersService.serializeUser(user))
+          return UsersService.insertUser(
+            req.app.get('db'),
+            newUser
+          )
+            .then(user => {
+              res
+                .status(201)
+                .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                .json(UsersService.serializeUser(user))
+            })
           })
       })
       .catch(next)

@@ -1,4 +1,5 @@
 const knex = require('knex')
+const bcrypt = require('bcryptjs')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
@@ -135,7 +136,6 @@ describe.only('Users Endpoints', function() {
           password: '11AAaabb!!',
           email: 'test email'
         }
-        console.log(newUser)
         return supertest(app)
           .post('/api/users')
           .send(newUser)
@@ -145,7 +145,6 @@ describe.only('Users Endpoints', function() {
             expect(res.body.user_name).to.eql(newUser.user_name)
             expect(res.body.email).to.eql(newUser.email)
             expect(res.body).to.not.have.property('password')
-            expect(res.body.location).to.eql(`/api/users/${res.body.id}`)
           })
           .expect(res => 
             db
@@ -157,6 +156,11 @@ describe.only('Users Endpoints', function() {
                 expect(row.user_name).to.eql(newUser.user_name)
                 expect(row.email).to.eql(newUser.email)
                 expect(row.deleted).to.eql(false)
+
+                return bcrypt.compare(newUser.password, row.password)
+              })
+              .then(compareMatch => {
+                expect(compareMatch).to.be.true
               })
           )
       })
