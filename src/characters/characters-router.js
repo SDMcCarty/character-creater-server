@@ -32,6 +32,7 @@ charactersRouter
 
     newCharacter.id = req.id
     newCharacter.created = req.created
+    newCharacter.user_id = req.user.id
 
     CharactersService.insertCharacter(
       req.app.get('db'),
