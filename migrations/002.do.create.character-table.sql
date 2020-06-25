@@ -13,5 +13,5 @@ CREATE TABLE characters (
   created TIMESTAMPTZ NOT NULL DEFAULT now(),
   modified TIMESTAMPTZ DEFAULT now(),
   status status_types NOT NULL,
-  user_id INTEGER REFERENCES character_creater_users(id) ON DELETE SET NULL
+  user_id INTEGER NOT NULL REFERENCES character_creater_users(id) ON DELETE SET NULL
 );
