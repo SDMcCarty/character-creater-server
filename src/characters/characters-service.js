@@ -26,6 +26,7 @@ const CharactersService = {
       .from('characters')
       .select('*')
       .where('characters.user_id', user_id)
+      // .and(deleted = false) for after deletion
   },
 
   insertCharacter(db, newCharacter) {
