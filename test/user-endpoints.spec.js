@@ -2,14 +2,13 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
+const { expect } = require('chai')
 
-describe('Users Endpoints', function() {
+describe.only('Users Endpoints', function() {
   let db
 
-  const {
-    testUsers,
-    testCharacters,
-  } = helpers.makeCharactersFixtures()
+  const { testUsers } = helpers.makeCharactersFixtures()
+  const testUser = testUsers[0]
 
   before('make knex instance', () => {
     db = knex({
@@ -25,34 +24,144 @@ describe('Users Endpoints', function() {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe(`GET users/:user_id`, () => {
-    context('given no characters', () => {
-     it(`responds with 200, and empty array when no characters`, () => {
-       return supertest(app)
-         .get('/api/users/2/characters')
-         .expect(200, [])
-     })
+  describe('POST api/users', () => {
+    context('User Validation', () => {
+      beforeEach('insert users', () => 
+        helpers.seedUsers(
+          db,
+          testUsers
+        )
+    )
+
+    const requiredFields = [ 'user_name', 'password', 'email']
+
+    requiredFields.forEach(field => {
+      const registerAttemptBody = {
+        user_name: 'test user_name',
+        password: 'test password',
+        email: 'test email'
+      }
+
+      it(`responds with 400 required error when '${field}' is missing`, () => {
+        delete registerAttemptBody[field]
+
+        return supertest(app)
+          .post('/api/users')
+          .send(registerAttemptBody)
+          .expect(400, {
+            error: `Missing '${field}' in request body`
+          })
+        })
+      })
+
+      it(`responds 400 'Password must be longer than 8 characters' when empty password`, () => {
+        const userShortPassword = {
+          user_name: 'test user_name',
+          password: '1234567',
+          email: 'test email'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(userShortPassword)
+          .expect(400, { error: `Password must be longer than 8 characters` })
+      })
+
+      it(`responds 400 'Password much be less than 72 characters' when long password`, () => {
+        const userLongPassword = {
+          user_name: 'test user_name',
+          password: '*'.repeat(73),
+          email: 'test@gmail.com'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(userLongPassword)
+          .expect(400, { error: `Password must be less than 72 characters` })
+      })
+
+      it(`responds 400 when password starts with spacees`, () => {
+        const userPasswordStartsSpaces = {
+          user_name: 'test user_name',
+          password: ' 1Aa!2Bb@',
+          email: 'test email'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(userPasswordStartsSpaces)
+          .expect(400, { error: `Password must not start or end with spaces` })
+      })
+
+      it('responds 400 when password ends with spaces', () => {
+        const userPasswordEndsSpaces = {
+          user_name: 'test user_name',
+          password: '1Aa!2Bb@ ',
+          email: 'test email'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(userPasswordEndsSpaces)
+          .expect(400, { error: 'Password must not start or end with spaces' })
+      })
+
+      it('responds 400 when password is not complex enough', () => {
+        const userPasswordNotComplex = {
+          user_name: 'test user_name',
+          password: '11AAaabb',
+          email: 'test email'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(userPasswordNotComplex)
+          .expect(400, { error: `Password must contain 1 upper case, lower case, number, and special character` })
+      })
+
+      it(`responds 400 'User name already taken' when user_name isn't unique`, () => {
+        const duplicateUser = {
+          user_name: testUser.user_name,
+          password: '11AAaabb!!',
+          email: 'test email'
+        }
+        return supertest(app)
+          .post('/api/users')
+          .send(duplicateUser)
+          .expect(400, { error: `Username already taken` })
+      })
+
     })
 
-    context('given characters in DB', () => {
-     beforeEach('insert characters', () => {
-       return helpers.seedCharactersTables(
-         db,
-         testUsers,
-         testCharacters
-       )
-     })
-
-     it('responds with 200 and all characters for a user', () => {
-       const expectedCharacters = testCharacters.filter(character => character.user_id === testUsers[0].id)
-       return supertest(app)
-        .get('/api/users/1/characters')
-        .expect(200, expectedCharacters)
-     })
-
-
+    context('Happy path!', () => {
+      it(`responds 201, serialized user, storing bcrypted password`, () => {
+        const newUser = {
+          user_name: 'test user_name',
+          password: '11AAaabb!!',
+          email: 'test email'
+        }
+        console.log(newUser)
+        return supertest(app)
+          .post('/api/users')
+          .send(newUser)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property('id')
+            expect(res.body.user_name).to.eql(newUser.user_name)
+            expect(res.body.email).to.eql(newUser.email)
+            expect(res.body).to.not.have.property('password')
+            expect(res.body.location).to.eql(`/api/users/${res.body.id}`)
+          })
+          .expect(res => 
+            db
+              .from('character_creater_users')
+              .select('*')
+              .where({ id: res.body.id })
+              .first()
+              .then(row => {
+                expect(row.user_name).to.eql(newUser.user_name)
+                expect(row.email).to.eql(newUser.email)
+                expect(row.deleted).to.eql(false)
+              })
+          )
+      })
     })
+  
 
-   })
-
+  })
 })

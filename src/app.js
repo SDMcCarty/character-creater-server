@@ -20,7 +20,7 @@ app.use(cors())
 
 app.use('/api/characters/', charactersRouter)
 app.use('/api/auth', authRouter)
-
+app.use('/api/users', usersRouter)
 
 
 app.use(function errorHandler(error, req, res, next) {
