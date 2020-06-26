@@ -70,6 +70,11 @@ describe('Characters Endpoints', function() {
         first_name: 'William',
         last_name: 'Williamson',
         major_trait: 'grandiose',
+        age: '33',
+        sex: 'Male',
+        motivation: 'To the best there ever was, wholely unlike anyone prior',
+        fear: 'commitment',
+        history: 'Raised by a widower, he quickly learned the value of swerving and standing just to the left at night. He is now honor bound to be better than many, but mostly at cooking.',
         status: 'completed',
         user_id: testUser.id
       }
@@ -83,7 +88,12 @@ describe('Characters Endpoints', function() {
           expect(res.body).to.have.property('modified')
           expect(res.body.first_name).to.eql(newCharacter.first_name)
           expect(res.body.last_name).to.eql(newCharacter.last_name)
+          expect(res.body.age).to.eql(newCharacter.age)
+          expect(res.body.sex).to.eql(newCharacter.sex)
           expect(res.body.major_trait).to.eql(newCharacter.major_trait)
+          expect(res.body.motivation).to.eql(newCharacter.motivation)
+          expect(res.body.fear).to.eql(newCharacter.fear)
+          expect(res.body.history).to.eql(newCharacter.history)
           expect(res.body.status).to.eql(newCharacter.status)
           expect(res.body.user_id).to.eql(newCharacter.user_id)
           expect(res.headers.location).to.eql(`/api/users/1/characters/${res.body.id}`)
@@ -100,7 +110,12 @@ describe('Characters Endpoints', function() {
             .then(row => {
               expect(row.first_name).to.eql(newCharacter.first_name)
               expect(row.last_name).to.eql(newCharacter.last_name)
+              expect(row.age).to.eql(newCharacter.age)
+              expect(row.sex).to.eql(newCharacter.sex)
               expect(row.major_trait).to.eql(newCharacter.major_trait)
+              expect(row.motivation).to.eql(newCharacter.motivation)
+              expect(row.fear).to.eql(newCharacter.fear)
+              expect(row.history).to.eql(newCharacter.history)
               expect(row.status).to.eql(newCharacter.status)
               expect(row.user_id).to.eql(newCharacter.user_id)
               const expectedDate = new Date().toLocaleString('en', { timezone: 'UTC' })
@@ -139,7 +154,12 @@ describe('Characters Endpoints', function() {
         const updateCharacter = {
           first_name: 'Updated name',
           last_name: 'Updated last',
-          major_trait: 'Updated Trait'
+          major_trait: 'Updated Trait',
+          age: 'Updated Age',
+          sex: 'Updated Sex',
+          motivation: 'New Motivation',
+          fear: 'New Fear',
+          history: 'New history',
         }
         const expectedCharacters = {
           ...testCharacters[idToUpdate -1],

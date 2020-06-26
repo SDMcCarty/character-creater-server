@@ -27,7 +27,6 @@ const CharactersService = {
       .select('*')
       .where('characters.user_id', user_id)
       .whereNot('characters.status', 'deleted')
-      // .and(deleted = false) for after deletion
   },
 
   insertCharacter(db, newCharacter) {
@@ -54,10 +53,15 @@ const CharactersService = {
       first_name: xss(character.first_name),
       last_name: xss(character.last_name),
       major_trait: xss(character.major_trait),
+      age: xss(character.age),
+      sex: xss(character.sex),
+      motivation: xss(character.motivation),
+      fear: xss(character.fear),
+      history: xss(character.history),
       created: new Date(character.created),
       modified: new Date(character.modified) || null,
       status: character.status,
-      user_id: character.user_id
+      user_id: character.user_id,
     }
   },
 }

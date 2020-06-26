@@ -26,8 +26,8 @@ charactersRouter
       })
   })
   .post(jsonBodyParser, (req, res, next) => {
-    const { user_id, first_name, last_name, status, major_trait } = req.body
-    const newCharacter = { user_id, first_name, last_name, status, major_trait }
+    const { user_id, first_name, last_name, status, major_trait, age, sex, motivation, fear, history } = req.body
+    const newCharacter = { user_id, first_name, last_name, status, major_trait, age, sex, motivation, fear, history }
 
     newCharacter.id = req.id
     newCharacter.created = req.created
@@ -92,9 +92,9 @@ charactersRouter
   })
   .patch(jsonBodyParser, (req, res, next) => {
     const { id } = req.params
-    const { first_name, last_name, major_trait, status } = req.body
+    const { first_name, last_name, major_trait, status, age, sex, motivation, fear, history } = req.body
     console.log(req.body)
-    const characterToUpdate = { first_name, last_name, major_trait, status }
+    const characterToUpdate = { first_name, last_name, major_trait, status, age, sex, motivation, fear, history }
 
     CharactersService.updateCharacter(
       req.app.get('db'),
