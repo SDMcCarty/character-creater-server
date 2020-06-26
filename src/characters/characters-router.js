@@ -2,7 +2,6 @@ const express = require('express')
 const path = require('path')
 const CharactersService = require('./characters-service')
 const { requireAuth } = require('../middleware/jwt-auth')
-const { contentSecurityPolicy } = require('helmet')
 
 const charactersRouter = express.Router()
 const jsonBodyParser = express.json()

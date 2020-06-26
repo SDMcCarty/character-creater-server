@@ -26,7 +26,7 @@ describe('Characters Endpoints', function() {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe('GET /api/users/:users_id/characters/:charater_id', () => {
+  describe('GET /api/characters/:charater_id', () => {
     context('given character exists', () => {
       beforeEach('insert characters', () => {
         return helpers.seedCharactersTables(
@@ -40,7 +40,7 @@ describe('Characters Endpoints', function() {
         const expectedCharacter = testCharacters[0]
         //Change Route => add .auth()
         return supertest(app)
-          .get('/api/users/3/characters/1')
+          .get('/api/characters/1')
           .expect(200, expectedCharacter)
       })
     })
@@ -48,13 +48,13 @@ describe('Characters Endpoints', function() {
     context(`given the character doesn't exist`, () => {
       it(`should resond with 404 'Character not found'`, () => {
         return supertest(app)
-          .get('/api/users/3/characters/4')
+          .get('/api/characters/4')
           .expect(404, { error: 'Character not found' })
       })
     })
   })
 
-  describe('POST /api/users/:user_id/characters', () => {
+  describe('POST /api/characters', () => {
     beforeEach('insert users', () => {
       return helpers.seedUsers(
         db,
@@ -73,7 +73,7 @@ describe('Characters Endpoints', function() {
         user_id: testUser.id
       }
       return supertest(app)
-        .post('/api/users/1/characters')
+        .post('/api/characters')
         // .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newCharacter)
         .expect(201)
@@ -107,6 +107,23 @@ describe('Characters Endpoints', function() {
               expect(actualDate).to.eql(expectedDate)
             })
         })
+    })
+
+
+  })
+
+  describe('PATCH /api/characters/:character_id', () => {
+
+    context('Given a delete request', () => {
+      beforeEach('Add Characters and Users', () => {
+        return helpers.seedCharactersTables(
+          db,
+          testUsers,
+          testCharacters
+        )
+      })
+      
+
     })
 
 
