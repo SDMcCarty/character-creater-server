@@ -3,6 +3,7 @@ const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
 const { expect } = require('chai')
+const { makeCharactersFixtures, makeCharactersArray } = require('./test-helpers')
 
 describe('Characters Endpoints', function() {
   let db
@@ -112,20 +113,51 @@ describe('Characters Endpoints', function() {
 
   })
 
-  describe('PATCH /api/characters/:character_id', () => {
+  describe.only('PATCH /api/characters/:character_id', () => {
+    context('Given no character', () => {
+      it('responds with 404', () => {
+        const characterId = 12345678
+        return supertest(app)
+          .patch(`/api/characters/${characterId}`)
+          .expect(404, { error: { message: `Character doesn't exist` } })
+      })
+    })
 
-    context('Given a delete request', () => {
-      beforeEach('Add Characters and Users', () => {
+    context('Given characters in DB', () => {
+      const testCharacters = makeCharactersArray()
+
+      beforeEach('insert characters', () => {
         return helpers.seedCharactersTables(
           db,
           testUsers,
           testCharacters
         )
       })
-      
+
+      it('responds with 204 and updates the character', () => {
+        const idToUpdate = 2
+        const updateCharacter = {
+          first_name: 'Updated name',
+          last_name: 'Updated last',
+          major_trait: 'Updated Trait'
+        }
+        const expectedCharacters = {
+          ...testCharacters[idToUpdate -1],
+          ...updateCharacter
+        }
+
+        return supertest(app)
+          .patch(`/api/characters/${idToUpdate}`)
+          .send(updateCharacter)
+          .expect(204)
+          .then(res => 
+            supertest(app)
+              .get(`/api/characters/${idToUpdate}`)
+              .expect(expectedCharacters)  
+          )
+      })
 
     })
-
 
   })
 

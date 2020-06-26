@@ -70,18 +70,44 @@ charactersRouter
 //patch character by id
 //delete character by id
 charactersRouter
-  .route('/:user_id/characters/:character_id')
-  .get(checkCharacterExists, (req, res, next) => {
+  .route('/:character_id')
+  .all((req, res, next) => {
     CharactersService.getCharacter(
       req.app.get('db'),
       req.params.character_id
     )
-      .then(character => {
-        const serializedCharacter = CharactersService.serializeCharacter(character)
-        res.json(serializedCharacter)
-      })
-      .catch(next)
+    .then(character => {
+      if (!character) {
+        return res.status(404).json({
+          error: { message: `Character doesn't exist` }
+        })
+      }
+      res.character = character //saves chara for next
+      next()
+    })
+    .catch(next)
   })
+  .get(checkCharacterExists, (req, res, next) => {
+    res.json(serializedCharacter = CharactersService.serializeCharacter(res.character))
+  })
+  .patch(jsonBodyParser, (req, res, next) => {
+    const { id } = req.params
+    const { first_name, last_name, major_trait, status } = req.body
+    console.log(req.body)
+    const characterToUpdate = { first_name, last_name, major_trait, status }
+
+    CharactersService.updateCharacter(
+      req.app.get('db'),
+      req.params.character_id,
+      characterToUpdate
+    )
+    .then(numRowsAffected => {
+      res.status(204).end()
+    })
+    .catch(next)
+  })
+
+  
 
   async function checkCharacterExists(req, res, next) {
     try {

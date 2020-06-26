@@ -26,6 +26,7 @@ const CharactersService = {
       .from('characters')
       .select('*')
       .where('characters.user_id', user_id)
+      .whereNot('characters.status', 'deleted')
       // .and(deleted = false) for after deletion
   },
 
@@ -38,6 +39,13 @@ const CharactersService = {
       .then(character => 
         CharactersService.getCharacter(db, character.id)
       )
+  },
+
+  updateCharacter(db, id, newCharacterFields) {
+    console.log(newCharacterFields)
+    return db('characters')
+      .where({ id })
+      .update(newCharacterFields)
   },
 
   serializeCharacter(character) {
