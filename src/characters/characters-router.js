@@ -91,6 +91,7 @@ charactersRouter
     res.json(serializedCharacter = CharactersService.serializeCharacter(res.character))
   })
   .patch(jsonBodyParser, (req, res, next) => {
+    console.log(req.body)
     const { id } = req.params
     const { first_name, last_name, major_trait, status, age, sex, motivation, fear, history } = req.body
     console.log(req.body)
