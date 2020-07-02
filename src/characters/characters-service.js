@@ -41,7 +41,6 @@ const CharactersService = {
   },
 
   updateCharacter(db, id, newCharacterFields) {
-    console.log(newCharacterFields)
     return db('characters')
       .where({ id })
       .update(newCharacterFields)
