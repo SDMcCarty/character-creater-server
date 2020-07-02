@@ -42,4 +42,4 @@ Utilizes standard HTTP respones to indicate success or failure of requests.
 
 ## TECH STACK
 
-Node, PostgreSQL, with REST.
+Node, Express, PostgreSQL, with REST.
