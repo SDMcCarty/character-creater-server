@@ -1,30 +1,45 @@
-# Express Boilerplate!
+## CHARACTER CREATER API
 
-This is a boilerplate project used for starting new projects!
+## API LINK
 
-## Set up
+https://maple-minister-95148.herokuapp.com/
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## DOCUMENTATION
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+* '/api/users/':
+    POST: registers/logs in users.
 
-## Scripts
+* '/api/characters/' :
+    GET: gets a user's characters with all fields with serialization.
+    POST: adds a new character linked to the user via user_id.
 
-Start the application `npm start`
+* '/api/characters/:character_id' :
+    GET: gets a specific character for the user with all fields with serialization.
+    PATCH: updates a specific character (also used for 'deletion').
 
-Start nodemon for the application `npm run dev`
+* '/api/auth': grants authorization to users so they can fetch their characters.
 
-Run the tests `npm test`
+## SUMMARY
 
-## Deploying
+This API was created to help creators have a centralized place to store all their characters and information about them. Included fields are:
+  First Name
+  Last Name
+  Age
+  Sex
+  Major Trait
+  Motivation
+  Fear
+  History
+as of Version 1, with more in the works. All are text.
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+Required fields are: first_name, last_name, and major_trait.
 
-## Database
+Authorization is necessary for using the API using JWT, and uses Bearer Token Auth.
 
-go into env folder and set up DB_URL and TEST_DB_URL
+## ERRORS
+
+Utilizes standard HTTP respones to indicate success or failure of requests.
+
+## TECH STACK
+
+Node, PostgreSQL, with REST.

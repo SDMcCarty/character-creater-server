@@ -10,13 +10,11 @@ charactersRouter
   .route('/')
   .all(requireAuth)
   .get((req, res, next) => {
-    console.log(req.user.id)
     CharactersService.getCharactersForUser(
       req.app.get('db'), 
       req.user.id
     )
       .then(characters => {
-        console.log(characters)
         const serializedCharacters = characters.map(character => CharactersService.serializeCharacter(character))
         res.json(serializedCharacters)
       })
@@ -47,28 +45,11 @@ charactersRouter
 
   })
 
-  async function checkUserExists(req, res, next) {
-    try {
-      const user = await CharactersService.getById(
-        req.app.get('db'),
-        req.params.user_id
-      )
-
-      if(!user) 
-        return res.status(404).json({
-          error: `User doesn't exist`
-        })
-        res.user = user
-        next()
-    } catch(error) {
-      next(error)
-    }
-  }
 
 //get character by id
 //post character from user (user_id is necessary)
 //patch character by id
-//delete character by id
+//delete character by id -> patch
 charactersRouter
   .route('/:character_id')
   .all((req, res, next) => {
@@ -91,10 +72,8 @@ charactersRouter
     res.json(serializedCharacter = CharactersService.serializeCharacter(res.character))
   })
   .patch(jsonBodyParser, (req, res, next) => {
-    console.log(req.body)
     const { id } = req.params
     const { first_name, last_name, major_trait, status, age, sex, motivation, fear, history } = req.body
-    console.log(req.body)
     const characterToUpdate = { first_name, last_name, major_trait, status, age, sex, motivation, fear, history }
 
     CharactersService.updateCharacter(
