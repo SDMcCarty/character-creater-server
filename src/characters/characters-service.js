@@ -8,18 +8,6 @@ const CharactersService = {
       .where('id', character_id)
       .first()
   },
-  
-  getAllCharacters(db) {
-    return db
-      .from('characters')
-      .select('*')
-  },
-
-  getById(db, id) {
-    return this.getAllCharacters(db)
-      .from('characters')
-      .where('user_id', id)
-  },
 
   getCharactersForUser(db, user_id) {
     return db
