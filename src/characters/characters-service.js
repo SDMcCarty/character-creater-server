@@ -13,7 +13,7 @@ const CharactersService = {
     return db
       .from('characters')
       .select('*')
-  }, //is this something app should do?
+  },
 
   getById(db, id) {
     return this.getAllCharacters(db)

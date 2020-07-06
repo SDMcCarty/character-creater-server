@@ -8,6 +8,7 @@ const jsonBodyParser = express.json()
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
+    //adds new user to DB
     const { password, user_name, email } = req.body
 
     for (const field of ['user_name', 'password', 'email'])

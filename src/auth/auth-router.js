@@ -7,6 +7,7 @@ const jsonBodyParser = express.json()
 
 authRouter
   .post('/login', jsonBodyParser, (req, res, next) => {
+    //logs a user in
     const { user_name, password } = req.body
     const loginUser = { user_name, password }
 

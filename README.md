@@ -19,6 +19,9 @@ https://maple-minister-95148.herokuapp.com/
 
 * '/api/auth': grants authorization to users so they can fetch their characters.
 
+[Screenshot](docs/Example001.png)
+[Screenshot](docs/Example002.png)
+
 ## SUMMARY
 
 This API was created to help creators have a centralized place to store all their characters and information about them. Included fields are:

@@ -8,8 +8,9 @@ const jsonBodyParser = express.json()
 
 charactersRouter
   .route('/')
-  .all(requireAuth)
+  .all(requireAuth) //authorizes on all routes
   .get((req, res, next) => {
+    //gets a user's characters
     CharactersService.getCharactersForUser(
       req.app.get('db'), 
       req.user.id
@@ -24,6 +25,7 @@ charactersRouter
       })
   })
   .post(jsonBodyParser, (req, res, next) => {
+    //adds a character to the DB, referencing the user by id
     const { user_id, first_name, last_name, status, major_trait, age, sex, motivation, fear, history } = req.body
     const newCharacter = { user_id, first_name, last_name, status, major_trait, age, sex, motivation, fear, history }
 
@@ -45,13 +47,8 @@ charactersRouter
 
   })
 
-
-//get character by id
-//post character from user (user_id is necessary)
-//patch character by id
-//delete character by id -> patch
 charactersRouter
-  .route('/:character_id')
+  .route('/:character_id') //gets a specific character
   .all((req, res, next) => {
     CharactersService.getCharacter(
       req.app.get('db'),
@@ -69,7 +66,7 @@ charactersRouter
     .catch(next)
   })
   .get(checkCharacterExists, (req, res, next) => {
-    res.json(serializedCharacter = CharactersService.serializeCharacter(res.character))
+    res.json(serializedCharacter = CharactersService.serializeCharacter(res.character)) //sends a 'clean' character
   })
   .patch(jsonBodyParser, (req, res, next) => {
     const { id } = req.params

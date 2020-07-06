@@ -18,9 +18,9 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.use('/api/characters/', charactersRouter)
-app.use('/api/auth', authRouter)
-app.use('/api/users', usersRouter)
+app.use('/api/characters/', charactersRouter) //gets a users characters
+app.use('/api/auth', authRouter) //checks auth
+app.use('/api/users', usersRouter) //allows users to login/register
 
 
 app.use(function errorHandler(error, req, res, next) {
