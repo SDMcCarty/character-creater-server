@@ -19,8 +19,8 @@ https://maple-minister-95148.herokuapp.com/
 
 * '/api/auth': grants authorization to users so they can fetch their characters.
 
-[Screenshot](docs/Example001.png)
-[Screenshot](docs/Example002.png)
+![Image of Example Response](docs/Example001.png)
+![Image of Example Response](docs/Example002.png)
 
 ## SUMMARY
 
@@ -46,3 +46,71 @@ Utilizes standard HTTP respones to indicate success or failure of requests.
 ## TECH STACK
 
 Node, Express, PostgreSQL, with REST.
+
+## CLIENT INFO
+
+## KARTARA
+
+## SUMMARY
+
+Kartara is an app to help creators keep all of their character information in one place, as well as helping them to create new ones. They can either enter in information for a character they've already created, or generate random prompts to help them round out a character idea. Saved characters can then be updated or deleted as the creator builds and destroys the lives around them.
+
+## TEST USER
+
+user: User
+password: P@ssword123
+
+## LINK
+
+https://kartara.sdmccarty.vercel.app
+
+## SCREENSHOTS
+
+Mobile View
+![Image of Mobile View](docs/MobileView.png)
+
+Login Page
+![Image of Login Page](docs/Login.png)
+
+Homepage
+![Image of Homepage](docs/Homepage.png)
+
+Create Character Page
+![Image of Create Character Page](docs/CreateCharacter.png)
+
+Save Character Page
+![Image of Save Character Page](docs/SaveCharacter.png)
+
+Character List Page
+![Image of Character List Page](docs/CharacterList.png)
+
+Edit Character Page
+![Image of Edit Character Page](docs/EditCharacter.png)
+
+## TECH STACK
+
+React, React Router, JavaScript, HTML, CSS
+
+## COMPONENTS
+
+* App: App in src/components renders the routes and other components for the application to utilize
+
+* Register: RegistraterPage in src/routes loads the page, with src/components/RegistrationForm loading the form
+
+* Login: LoginPage in src/routes is the landing page for log in, with src/components/LoginForm rendering the actual form for logging in
+
+* Create Character: src/components/CreateCharacter loads the form for creating a new character, with src/components/Utils/GetRandom providing the random data
+
+* Review Character: src/components/ReviewCharacter grabs the new character data for the creater to either save or start again
+
+* Character List: src/components/CharacterList displays a users characters and allows them to view more details about them
+
+* Character Page: src/routes/Character displays the full information available for a character with the option to edit or delete them
+
+* Edit Character: src/components/EditCharacter gives creators the opportunity to edit the information about their characters before saving, canceling, or deleting
+
+* Utils on src/components/Utils provides information for the Private and Public Routes (as well as the Get Random methods mentioned above)
+
+* Context: src/context provides basic context for the app
+
+* Services: src/services has the authorization services needed for page

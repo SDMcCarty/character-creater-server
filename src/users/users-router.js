@@ -20,7 +20,7 @@ usersRouter
     const passwordError = UsersService.validatePassword(password)
 
     if (passwordError) 
-        return res.status(400).json({ error: passwordError })
+      return res.status(400).json({ error: passwordError })
 
     UsersService.hasUserWithUserName(
       req.app.get('db'),
@@ -30,7 +30,7 @@ usersRouter
         if (hasUserWithUserName)
           return res.status(400).json({ error: `Username already taken` })
 
-          return UsersService.hashPassword(password)
+        return UsersService.hashPassword(password)
           .then(hashedPassword => {
             const newUser = {
               user_name,
@@ -40,19 +40,19 @@ usersRouter
               password: hashedPassword
             }
 
-          return UsersService.insertUser(
-            req.app.get('db'),
-            newUser
-          )
-            .then(user => {
-              res
-                .status(201)
-                .location(path.posix.join(req.originalUrl, `/${user.id}`))
-                .json(UsersService.serializeUser(user))
-            })
+            return UsersService.insertUser(
+              req.app.get('db'),
+              newUser
+            )
+              .then(user => {
+                res
+                  .status(201)
+                  .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                  .json(UsersService.serializeUser(user))
+              })
           })
       })
       .catch(next)
   })
 
-  module.exports = usersRouter
+module.exports = usersRouter
